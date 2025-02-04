@@ -64,17 +64,18 @@ def recognize_attendance():
                 tt = str(Id)
                 confstr = "  {0}%".format(round(100 - conf))
 
-            if (100 - conf) > 67:
+            if (100 - conf) > 65:
                 ts = time.time()
                 date = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d')
                 timeStamp = datetime.datetime.fromtimestamp(ts).strftime('%H:%M:%S')
                 attendance.loc[len(attendance)] = {'Id': Id, 'Name': name, 'Date': date, 'Time': timeStamp}
 
 
-            if (100 - conf) > 67:
+            if (100 - conf) > 65:
                 tt = tt + " [Pass]"
                 cv2.putText(im, str(tt), (x+5, y-5), font, 1, (255, 255, 255), 2)
             else:
+                tt = tt + " [Fail]"
                 cv2.putText(im, str(tt), (x+5, y-5), font, 1, (255, 255, 255), 2)
 
             color = (0, 255, 0) if (100 - conf) > 67 else (0, 255, 255) if (100 - conf) > 50 else (0, 0, 255)
