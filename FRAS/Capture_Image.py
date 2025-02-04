@@ -14,8 +14,6 @@ def is_number(s):
 def takeImages():
     Id = input("Enter Your Id: ").strip()
     name = input("Enter Your Name: ").strip()
-
-    # Kiểm tra hợp lệ
     if not is_number(Id):
         print("⚠️ Error: ID must be a number!")
         return
@@ -66,7 +64,7 @@ def takeImages():
     with open(csv_path, 'a', newline='') as csvFile:
         writer = csv.writer(csvFile)
         if not file_exists:
-            writer.writerow(["Id", "Name"])  # Ghi tiêu đề nếu file chưa tồn tại
+            writer.writerow(["Id", "Name"])  
         writer.writerow([Id, name])
 
     print("📝 Student details saved successfully!")

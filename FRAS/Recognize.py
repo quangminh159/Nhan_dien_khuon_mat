@@ -28,11 +28,9 @@ def recognize_attendance():
     font = cv2.FONT_HERSHEY_SIMPLEX
     col_names = ['Id', 'Name', 'Date', 'Time']
     attendance = pd.DataFrame(columns=col_names)
-
-    # Khởi tạo webcam
     cam = cv2.VideoCapture(0)
-    cam.set(3, 640)  # set video width
-    cam.set(4, 480)  # set video height
+    cam.set(3, 640)  
+    cam.set(4, 480)  
 
     minW = 0.1 * cam.get(3)
     minH = 0.1 * cam.get(4)
@@ -93,7 +91,7 @@ def recognize_attendance():
     Hour, Minute, Second = timeStamp.split(":")
 
     attendance_folder = os.path.join("FRAS", "Attendance")
-    os.makedirs(attendance_folder, exist_ok=True)  # Đảm bảo thư mục tồn tại
+    os.makedirs(attendance_folder, exist_ok=True)  
 
     fileName = os.path.join(attendance_folder, f"Attendance_{date}_{Hour}-{Minute}-{Second}.csv")
     attendance.to_csv(fileName, index=False)

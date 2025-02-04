@@ -97,7 +97,4 @@ def RecognizeFaces():
     Recognize.recognize_attendance()
     key = input("Enter any key to return main menu")
     mainMenu()
-
-
-# ---------------main driver ------------------
 mainMenu()

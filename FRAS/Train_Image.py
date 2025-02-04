@@ -18,10 +18,10 @@ def getImagesAndLabels(path):
 
     for imagePath in imagePaths:
         try:
-            pilImage = Image.open(imagePath).convert('L')  # Chuyển ảnh sang grayscale
+            pilImage = Image.open(imagePath).convert('L')  
             imageNp = np.array(pilImage, 'uint8')
 
-            Id = int(os.path.split(imagePath)[-1].split(".")[1])  # Lấy ID từ tên file
+            Id = int(os.path.split(imagePath)[-1].split(".")[1])  
             faces.append(imageNp)
             Ids.append(Id)
         except Exception as e:
@@ -31,7 +31,6 @@ def getImagesAndLabels(path):
 
 # ----------- train images function ---------------
 def TrainImages():
-    # Sử dụng đúng cú pháp OpenCV
     recognizer = cv2.face.LBPHFaceRecognizer_create()
 
     harcascadePath = os.path.join("FRAS", "haarcascade_frontalface_default.xml")
@@ -45,20 +44,16 @@ def TrainImages():
         return
 
     print("✅ Bắt đầu huấn luyện mô hình...")
-    recognizer.train(faces, np.array(Id))  # Không cần `Thread()`
+    recognizer.train(faces, np.array(Id))  
 
     output_folder = os.path.join("FRAS", "TrainingImageLabel")
-    os.makedirs(output_folder, exist_ok=True)  # Tạo thư mục nếu chưa có
+    os.makedirs(output_folder, exist_ok=True)  
 
     model_path = os.path.join(output_folder, "Trainner.yml")
     recognizer.save(model_path)
 
     print(f"✅ Huấn luyện hoàn tất! Model đã lưu tại '{model_path}'")
-
-    # Hiển thị số lượng ảnh đã huấn luyện
     counter_img(training_path)
-
-# Optional: Hiển thị số lượng ảnh đã huấn luyện
 def counter_img(path):
     imgcounter = 1
     imagePaths = [os.path.join(path, f) for f in os.listdir(path)]
@@ -67,7 +62,5 @@ def counter_img(path):
         time.sleep(0.008)
         imgcounter += 1
     print("\n✅ Tất cả hình ảnh đã được huấn luyện.")
-
-# Chạy thử
 if __name__ == "__main__":
     TrainImages()
