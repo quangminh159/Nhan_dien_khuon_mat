@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 from PIL import Image
 from threading import Thread
+from mtcnn import MTCNN
 
 # -------------- image labels ------------------------
 
@@ -15,15 +16,19 @@ def getImagesAndLabels(path):
     imagePaths = [os.path.join(path, f) for f in os.listdir(path)]
     faces = []
     Ids = []
+    detector = MTCNN()
 
     for imagePath in imagePaths:
         try:
-            pilImage = Image.open(imagePath).convert('L')  
+            pilImage = Image.open(imagePath).convert('RGB')  
             imageNp = np.array(pilImage, 'uint8')
-
-            Id = int(os.path.split(imagePath)[-1].split(".")[1])  
-            faces.append(imageNp)
-            Ids.append(Id)
+            results = detector.detect_faces(imageNp)
+            for result in results:
+                x, y, w, h = result['box']
+                face = imageNp[y:y+h, x:x+w]  
+                faces.append(cv2.cvtColor(face, cv2.COLOR_RGB2GRAY))  
+                Id = int(os.path.split(imagePath)[-1].split(".")[1])  
+                Ids.append(Id)
         except Exception as e:
             print(f"⚠ Lỗi khi xử lý ảnh '{imagePath}': {e}")
 
@@ -32,9 +37,6 @@ def getImagesAndLabels(path):
 # ----------- train images function ---------------
 def TrainImages():
     recognizer = cv2.face.LBPHFaceRecognizer_create()
-
-    harcascadePath = os.path.join("FRAS", "haarcascade_frontalface_default.xml")
-    detector = cv2.CascadeClassifier(harcascadePath)
 
     training_path = os.path.join("FRAS", "TrainingImage")
     faces, Id = getImagesAndLabels(training_path)
@@ -54,6 +56,7 @@ def TrainImages():
 
     print(f"✅ Huấn luyện hoàn tất! Model đã lưu tại '{model_path}'")
     counter_img(training_path)
+
 def counter_img(path):
     imgcounter = 1
     imagePaths = [os.path.join(path, f) for f in os.listdir(path)]
@@ -62,5 +65,6 @@ def counter_img(path):
         time.sleep(0.008)
         imgcounter += 1
     print("\n✅ Tất cả hình ảnh đã được huấn luyện.")
+
 if __name__ == "__main__":
     TrainImages()

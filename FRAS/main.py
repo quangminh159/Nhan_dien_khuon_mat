@@ -49,17 +49,16 @@ def mainMenu():
                 break
             elif choice == 5:
                 os.system("py automail.py")
-                break
-                mainMenu()
+                input("Mail Sent. Press any key to return to main menu.")
+                break  
             elif choice == 6:
                 print("Thank You")
-                break
+                exit() 
             else:
-                print("Invalid Choice. Enter 1-4")
-                mainMenu()
+                print("Invalid Choice. Enter 1-6")
         except ValueError:
-            print("Invalid Choice. Enter 1-4\n Try Again")
-    exit
+            print("Invalid Choice. Enter 1-6\n Try Again")
+
 
 
 # ---------------------------------------------------------
